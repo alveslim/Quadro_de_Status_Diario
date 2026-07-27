@@ -1,0 +1,83 @@
+Entendido! Peço desculpas pelo equívoco. Removi qualquer menção ao BotoBot e mantive o nome focado no sistema de Status das Operações.
+
+Aqui está o README atualizado com o nome do projeto e o status atual:
+📺 Status das Operações — Live TV Dashboard & Data Sync Engine
+
+    ⚠️ NOTA DE DESENVOLVIMENTO / PROTÓTIPO:
+
+    O projeto encontra-se atualmente no status de Protótipo / Validação de Conceito (PoC). O código presente neste repositório é apenas um script de teste totalmente diferente do que está planejado para a versão original/final. Esta documentação descreve a arquitetura, funcionalidades e objetivos da versão final que está sendo desenvolvida.
+
+🎯 O Conceito do Produto
+
+O objetivo desta solução é conectar o atendimento ao cliente com a operação visual em tempo real, eliminando erros de comunicação e trazendo total transparência para a equipe:
+
+    Entrada de Dados (Solicitação do Cliente): O cliente realiza a solicitação do serviço através do site/portal.
+
+    Processamento em Python: O motor em Python recebe a solicitação, valida os campos e processa os dados em tempo real.
+
+    Atualização da Planilha: O sistema grava e atualiza automaticamente os dados na planilha da empresa, mantendo os registros sempre sincronizados.
+
+    Exibição nas TVs (Dashboard ao Vivo): As TVs espalhadas pela empresa consomem a API e exibem o status operacional atualizado instantaneamente.
+
+    Módulo de Notificações: Disparo de alertas para a equipe e confirmação para os clientes a cada movimentação de status.
+
+🚀 Arquitetura do Fluxo de Dados
+Plaintext
+
+[ Solicitação do Cliente no Site ]
+                │
+                ▼
+     [ Motor Python (Backend) ] ───► [ Alertas e Notificações (Slack / WhatsApp / Email) ]
+                │
+                ├─────────────────────────┐
+                ▼                         ▼
+   [ Sincronização na Planilha ]    [ API de Exibição ]
+                │                         │
+                ▼                         ▼
+   [ Base Sempr
+   e Atualizada ]   [ Painéis em TV (Auto-Refresh) ]
+
+✨ Recursos da Versão Final
+📊 Painel para TVs (Live Display)
+
+    Visual Otimizado: Layout em modo escuro com tipografia de alta visibilidade para leitura a distância.
+
+    Atualização em Tempo Real: Sincronização contínua das informações nas telas sem recarregar a página.
+
+    Responsividade: Adaptação automática para diferentes resoluções (Full HD, 4K).
+
+⚡ Automação e Sincronização de Planilhas
+
+    Escrita Automática: Cada nova solicitação feita pelo cliente é gravada imediatamente na planilha.
+
+    Sincronização Contínua: Mantém a planilha como base oficial de dados atualizada em tempo real.
+
+🔔 Módulo de Notificações Ativas
+
+    Alertas Internos (Slack / Teams): Notificação em canais operacionais assim que o cliente envia um pedido.
+
+    Confirmação ao Cliente (Email / WhatsApp): Envio de atualizações de status diretamente para o cliente.
+
+    Alertas Visuais na TV: Destaque em cores e avisos na tela para chamados urgentes.
+
+🛠️ Tecnologias Planejadas
+
+    Backend & API: Python 3.x (Flask / FastAPI)
+
+    Processamento de Dados: Pandas / OpenPyXL / Google Sheets API
+
+    Interface das TVs: HTML5, CSS3, JavaScript ES6+
+
+    Notificações: Webhooks (Slack/Teams) e APIs de Mensageria (SendGrid/Twilio/WhatsApp API)
+
+🛣️ Status Atual do Desenvolvimento
+
+    [x] Validação Inicial (Atual): Teste de conceito local e simulação de rotas (código de teste atual no repositório).
+
+    [ ] Fase 1: Desenvolvimento da interface do site para o cliente enviar solicitações.
+
+    [ ] Fase 2: Construção do pipeline em Python para receber dados do site e atualizar a planilha em tempo real.
+
+    [ ] Fase 3: Implementação do painel definitivo para exibição nas TVs da empresa.
+
+    [ ] Fase 4: Integração do sistema de notificações (Slack, WhatsApp e E-mail).
