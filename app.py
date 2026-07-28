@@ -1,17 +1,23 @@
 from datetime import date
+import pandas as pd
 
 data_atual = date.today()
 # print(data_atual)
 data_br = data_atual.strftime("%d/%m/%Y")
 # print(data_br)
 data = "27/07/2026"
-with open("dado.csv", "r", encoding="utf-8") as file:
-    for line in file:
-        op, cliente, empresa, status, data_prevista = line.rstrip().split(",")
-        print(f"OP: {op} - Cliente: {cliente} | {empresa} {status}, {data_prevista}")
+df = pd.read_csv("dado.csv")
+resultado = df[df["data_prevista"] == "27/07/2026"]
+if not resultado.empty:
+    # Índice da linha no DataFrame (0-indexed)
+    linha_df = resultado.index[0]
+    nome_coluna = "status"
 
-    for line in file:
-        if data_prevista == data_br:
-            print("é hoje")
-        else:
-            print("nao é hoje")
+    # Salva a posição/referência na variável
+    posicao = {"linha_index": linha_df, "coluna": nome_coluna}
+
+    # Acessa o valor nessa posição exata
+    valor_exato = df.at[linha_df, nome_coluna]
+    print(
+        f"Posição no DF: linha {linha_df}, coluna '{nome_coluna}' -> Valor: {valor_exato}"
+    )
