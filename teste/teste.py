@@ -103,7 +103,7 @@ HTML_PAINEL = """
             try {
                 const resposta = await fetch('/api/dados');
                 const dados = await resposta.json();
-                
+
                 const grid = document.getElementById('grid-cards');
                 grid.innerHTML = ''; // Limpa os cards antigos
 
