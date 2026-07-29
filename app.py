@@ -1,13 +1,12 @@
-from datetime import date
-import pandas as pd
+from flask import Flask, render_template
 
-# Data atual Br
-data_atual = date.today()
-data_br = data_atual.strftime("%d/%m/%Y")
-# lendo planilha
-df = pd.read_csv("dado.csv")
-# filtrando apenas planilha de 38000 em diante && data atual
-filterdata = df["data_prevista"] == data_br
-filterop = df["op"] > 38000
-# apresentando o nosso filtro
-print(df[filterdata & filterop])
+app = Flask(__name__)
+
+
+@app.route("/")
+def principal():
+    return render_template("index.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
