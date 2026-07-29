@@ -1,5 +1,5 @@
 import os
-from main import Flask, jsonify, render_template_string
+from flask import Flask, jsonify, render_template_string
 import pandas as pd
 
 app = Flask(__name__)

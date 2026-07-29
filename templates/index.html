@@ -1,11 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Painel TV - Ao Vivo</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .status-bar {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 50px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+        }
+        .card {
+            background-color: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+        .card-title {
+            font-size: 1.8rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+        .card-value {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+    </style>
 </head>
 <body>
-    <a>legal</a>
+
+    <h1>Painel de Operações</h1>
+    <div class="status-bar">Atualização automática via Excel • <span id="relogio"></span></div>
+
+    <div class="grid" id="grid-cards">
+        <!-- Os dados do Excel serão injetados aqui pelo JavaScript -->
+    </div>
+
+    <script>
+        function atualizarRelogio() {
+            const agora = new Date();
+            document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
+        }
+
+        async function buscarDados() {
+            try {
+                const resposta = await fetch('/api/dados');
+                const dados = await resposta.json();
+
+                const grid = document.getElementById('grid-cards');
+                grid.innerHTML = ''; // Limpa os cards antigos
+
+                dados.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-title">${item.Indicador}</div>
+                        <div class="card-value">${item.Valor}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (erro) {
+                console.error("Erro ao buscar dados do Excel:", erro);
+            }
+        }
+
+        // Atualiza o relógio a cada segundo
+        setInterval(atualizarRelogio, 1000);
+        atualizarRelogio();
+
+        // Busca os dados do Excel a cada 3 segundos
+        buscarDados();
+        setInterval(buscarDados, 3000);
+    </script>
 </body>
 </html>
