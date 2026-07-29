@@ -3,4 +3,35 @@ op,cliente,empresa,status,data_prevista
 38002,hevi,semp, producao,24/07/2026
 38003,pce,samsung, entregue,27/07/2026
 38004,ctk,lg, em rota,28/07/2026
-38005,hevi,cx.papel,avaliacao,25/07/2026
+38005,hevi,cx.papel,avaliacao,29/07/2026
+38040,hevi,ceras johnson,producao,29/07/2026
+38041,hevi,ceras johnson,producao,29/07/2026
+38042,hevi,ceras johnson,novo,29/07/2026
+38043,hevi,ceras johnson,novo,29/07/2026
+38044,hevi,armor,avaliacao,29/07/2026
+38045,hevi,3m,producao,29/07/2026
+38046,pce,samsung,entregue,29/07/2026
+38047,pce,cx.biscoito,producao,30/07/2026
+38048,pce,yoki,em rota,30/07/2026
+38049,ctk,lg,em rota,28/07/2026
+38050,ctk,multilaser,producao,30/07/2026
+38051,ctk,philips,novo,31/07/2026
+38052,solutions,sagemcom,novo,29/07/2026
+38053,solutions,yamaha,avaliacao,30/07/2026
+38054,solutions,flextronics,producao,31/07/2026
+38055,hevi,ceras johnson,novo,01/08/2026
+38056,pce,cx.biscoito,producao,01/08/2026
+38057,ctk,lg,avaliacao,01/08/2026
+38058,solutions,sagemcom,producao,01/08/2026
+38059,hevi,3m,producao,03/08/2026
+38060,pce,samsung,em rota,03/08/2026
+38061,ctk,multilaser,novo,03/08/2026
+38062,solutions,yamaha,producao,03/08/2026
+38063,hevi,armor,em rota,04/08/2026
+38064,pce,yoki,entregue,04/08/2026
+38065,ctk,philips,producao,04/08/2026
+38066,solutions,flextronics,em rota,04/08/2026
+38067,hevi,ceras johnson,avaliacao,05/08/2026
+38068,pce,cx.papel,novo,05/08/2026
+38069,ctk,lg,entregue,05/08/2026
+38070,solutions,sagemcom,entregue,05/08/2026
