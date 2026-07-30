@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import calendar
 import pandas as pd
 
 ## -------- Data -------- ##
@@ -22,6 +23,25 @@ print(f"{df[filterdata_amanha & filterop]}\n")
 
 ## -------- Estatisticas --------  ##
 total_hevi = (df["cliente"] == "hevi").sum()
-print(total_hevi)
-
+# print(total_hevi)
+print("--------------------------------------------------------------")
 print(df["cliente"].value_counts())  # contagem de todos os clientes de uma vez
+print("--------------------------------------------------------------")
+
+## -------- Estatisticas Mensal -------- ##
+
+for mouth in range(1, 13):
+    # Using f-string to format month and year (%Y)
+    data = f"{mouth:02d}/{data_atual.strftime('%Y')}"
+    print(data)
+    dado = df["data_prevista"].str.lower().str.contains(data).sum()
+    print(f"total de entradas em agosto: {dado}\n")
+
+## -------- Calendario -------- ##
+
+ano_atual = calendar.calendar(2026)
+# print(ano_atual)
+ano_atual = date.today().year
+print(ano_atual)
+ano_passado = ano_atual - 1
+print(ano_passado)
