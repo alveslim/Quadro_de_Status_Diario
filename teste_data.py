@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 import calendar
 import pandas as pd
+import plotly.express as px
 
 ## -------- Data -------- ##
 # Data atual Br
@@ -45,3 +46,8 @@ ano_atual = date.today().year
 print(ano_atual)
 ano_passado = ano_atual - 1
 print(ano_passado)
+
+## -------- Grafico -------- ##
+
+grafico = px.histogram(df, x="cliente")
+grafico.show()
