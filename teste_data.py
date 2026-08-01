@@ -35,8 +35,10 @@ for mouth in range(1, 13):
     # Using f-string to format month and year (%Y)
     data = f"{mouth:02d}/{data_atual.strftime('%Y')}"
     print(data)
+    contagem = df["data_prevista"].str.contains(data).sum()
+    print(contagem)
     dado = df["data_prevista"].str.lower().str.contains(data).sum()
-    print(f"total de entradas em agosto: {dado}\n")
+    print(f"total de entradas: {dado}\n")
 
 ## -------- Calendario -------- ##
 
@@ -49,5 +51,8 @@ print(ano_passado)
 
 ## -------- Grafico -------- ##
 
-grafico = px.histogram(df, x="cliente")
-grafico.show()
+pizza = px.pie(df, names="cliente")
+pizza.show()
+
+histograma = px.histogram(dado, y="data_prevista", x="")
+histograma.show()
