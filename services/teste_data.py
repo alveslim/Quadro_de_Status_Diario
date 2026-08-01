@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-import calendar
 import pandas as pd
 import plotly.express as px
 
@@ -21,11 +20,15 @@ print(f"\n-------------------- HOJE {data_atual}------------------------\n")
 print(f"{df[filterdata & filterop]}")
 print(f"\n-------------------- Amanha {data_amanha}------------------------")
 print(f"{df[filterdata_amanha & filterop]}\n")
+# mostrar quando eh critico (ter um pisca alerta, e mudar para a tela imediatamente)
+# mostrar quando finalizado
+# um bot q envie no zap (forma de confirma acao para enviar no zap, e enviar no zap)
 
 ## -------- Grafico Pizza -------- ##
 
 pizza = px.pie(df, names="cliente")
 pizza.show()
+# fazer um gradico pizza do ano
 
 
 ## -------- Estatisticas Mensal de Entradas -------- ##
@@ -33,7 +36,7 @@ def estatistica_mensal(df, data_atual):
     resultados = []
 
     for month in range(1, 13):
-        # Formata o mês como MM/AAAA (corrigida a digitação 'mouth' -> 'month')
+        # Formata o mês como MM/AAAA
         data_busca = f"{month:02d}/{data_atual.strftime('%Y')}"
 
         # Conta a quantidade de ocorrências no mês
@@ -46,7 +49,6 @@ def estatistica_mensal(df, data_atual):
     return pd.DataFrame(resultados)
 
 
-# --- Exemplo de Uso ---
 # Supondo que você já tenha 'df' e 'data_atual':
 df_estatistica = estatistica_mensal(df, data_atual)
 
@@ -59,3 +61,5 @@ fig = px.bar(
     labels={"Mes": "Mês", "Total": "Total de Entradas"},
 )
 fig.show()
+
+## -------- Total de Entradas -------- ##
