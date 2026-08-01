@@ -13,42 +13,56 @@
         <div class="slider-viewport">
 
             <!-- SLIDE 1: Tabela Completa de HOJE -->
-            <!-- Adiciona o id slide-hoje e a classe se tiver crítico -->
-<div class="slide-item active {% if dados.tem_critico %}tem-item-critico{% endif %}" id="slide-hoje">
+            <div class="slide-item active {% if dados.tem_critico %}tem-item-critico{% endif %}" id="slide-hoje">
 
-    {% if dados.tem_critico %}
-        <div class="alerta-header">🚨 ATENÇÃO: EXISTEM OPs CRÍTICAS PROGRAMADAS PARA HOJE!</div>
-    {% else %}
-        <div class="slide-header">📅 PROGRAMAÇÃO DE HOJE ({{ dados.data_hoje }})</div>
-    {% endif %}
-
-    <div class="table-container">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>OP</th>
-                    <th>CLIENTE</th>
-                    <th>EMPRESA</th>
-                    <th>STATUS</th>
-                    <th>DATA PREVISTA</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in dados.hoje %}
-                <tr class="{% if row.critico %}linha-critica{% endif %}">
-                    <td><strong>{{ row.op }}</strong></td>
-                    <td>{{ row.cliente }}</td>
-                    <td>{{ row.empresa }}</td>
-                    <td><span class="badge {{ row.status }}">{{ row.status }}</span></td>
-                    <td>{{ row.data_prevista }}</td>
-                </tr>
+                {% if dados.tem_critico %}
+                    <div class="alerta-header">🚨 ATENÇÃO: EXISTEM OPs CRÍTICAS PROGRAMADAS PARA HOJE!</div>
                 {% else %}
-                <tr><td colspan="5" class="empty-msg">Nenhuma OP programada para hoje.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+                    <div class="slide-header">📅 PROGRAMAÇÃO DE HOJE ({{ dados.data_hoje }})</div>
+                {% endif %}
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ITEM</th>
+                                <th>CLIENTE</th>
+                                <th>EMPRESA</th>
+                                <th>REFERÊNCIA</th>
+                                <th>OP/LAYOUT</th>
+                                <th>FTD</th>
+                                <th>SITUAÇÃO</th>
+                                <th>DATA PREVISTA</th>
+                                <th>CRÍTICO</th> <!-- Cabeçalho Adicionado -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in dados.hoje %}
+                            <tr class="{% if row.IS_CRITICO %}linha-critica{% endif %}">
+                                <td>{{ row.ITEM }}</td>
+                                <td><strong>{{ row.CLIENTE }}</strong></td>
+                                <td>{{ row.EMPRESA }}</td>
+                                <td>{{ row.REFERENCIA }}</td>
+                                <td>{{ row.OP_LAYOUT }}</td>
+                                <td>{{ row.FTD }}</td>
+                                <td><span class="badge">{{ row.SERVICO_SITUACAO }}</span></td>
+                                <td>{{ row.DATA_PREVISTA }}</td>
+                                <!-- Célula do CRÍTICO aplicada aqui -->
+                                <td>
+                                    {% if row.IS_CRITICO %}
+                                        <span class="badge critico">CRÍTICO</span>
+                                    {% else %}
+                                        <span class="texto-normal">-</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="9" class="empty-msg">Nenhuma OP programada para hoje.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             <!-- SLIDE 2: Tabela Completa de AMANHÃ -->
             <div class="slide-item">
@@ -57,31 +71,46 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>OP</th>
+                                <th>ITEM</th>
                                 <th>CLIENTE</th>
                                 <th>EMPRESA</th>
-                                <th>STATUS</th>
+                                <th>REFERÊNCIA</th>
+                                <th>OP/LAYOUT</th>
+                                <th>FTD</th>
+                                <th>SITUAÇÃO</th>
                                 <th>DATA PREVISTA</th>
+                                <th>CRÍTICO</th> <!-- Cabeçalho Adicionado -->
                             </tr>
                         </thead>
                         <tbody>
                             {% for row in dados.amanha %}
-                            <tr>
-                                <td><strong>{{ row.op }}</strong></td>
-                                <td>{{ row.cliente }}</td>
-                                <td>{{ row.empresa }}</td>
-                                <td><span class="badge {{ row.status }}">{{ row.status }}</span></td>
-                                <td>{{ row.data_prevista }}</td>
+                            <tr class="{% if row.IS_CRITICO %}linha-critica{% endif %}">
+                                <td>{{ row.ITEM }}</td>
+                                <td><strong>{{ row.CLIENTE }}</strong></td>
+                                <td>{{ row.EMPRESA }}</td>
+                                <td>{{ row.REFERENCIA }}</td>
+                                <td>{{ row.OP_LAYOUT }}</td>
+                                <td>{{ row.FTD }}</td>
+                                <td><span class="badge">{{ row.SERVICO_SITUACAO }}</span></td>
+                                <td>{{ row.DATA_PREVISTA }}</td>
+                                <!-- Célula do CRÍTICO aplicada aqui -->
+                                <td>
+                                    {% if row.IS_CRITICO %}
+                                        <span class="badge critico">CRÍTICO</span>
+                                    {% else %}
+                                        <span class="texto-normal">-</span>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% else %}
-                            <tr><td colspan="5" class="empty-msg">Nenhuma OP programada para amanhã.</td></tr>
+                            <tr><td colspan="9" class="empty-msg">Nenhuma OP programada para amanhã.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- SLIDE 3: Gráficos LADO A LADO -->
+            <!-- SLIDE 3: Gráficos Horizontal -->
             <div class="slide-item">
                 <div class="slide-header">📊 PANORAMA GERAL E ESTATÍSTICAS</div>
                 <div class="charts-grid">

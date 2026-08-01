@@ -7,7 +7,13 @@ DATA_PATH = "dados/dado.csv"
 
 def carregar_dados():
     try:
-        return pd.read_csv(DATA_PATH)
+        # keep_default_na=False evita que o Pandas transforme células em branco em NaN
+        df = pd.read_csv(DATA_PATH, dtype=str, keep_default_na=False)
+        # Limpa espaços em branco no nome das colunas e nos valores
+        df.columns = df.columns.str.strip()
+        for col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+        return df
     except FileNotFoundError:
         return pd.DataFrame()
 
@@ -29,16 +35,27 @@ def obter_dados_dashboard():
     data_br = data_atual.strftime("%d/%m/%Y")
     data_br_amanha = data_amanha.strftime("%d/%m/%Y")
 
-    filterop = df["op"] > 38000
+    # Filtra as linhas por data
+    df_hoje = (
+        df[df["DATA_PREVISTA"] == data_br].copy()
+        if "DATA_PREVISTA" in df.columns
+        else pd.DataFrame()
+    )
+    df_amanha = (
+        df[df["DATA_PREVISTA"] == data_br_amanha].copy()
+        if "DATA_PREVISTA" in df.columns
+        else pd.DataFrame()
+    )
 
-    df_hoje = df[(df["data_prevista"] == data_br) & filterop].copy()
-    df_amanha = df[(df["data_prevista"] == data_br_amanha) & filterop].copy()
+    # REGRA: Considera crítico se a coluna CRITICO tiver algum valor marcado como critico/sim
+    if "CRITICO" in df_hoje.columns:
+        df_hoje["IS_CRITICO"] = (
+            df_hoje["CRITICO"].str.upper().isin(["CRITICO", "CRÍTICO", "SIM", "S", "1"])
+        )
+    else:
+        df_hoje["IS_CRITICO"] = False
 
-    # REGRA CRÍTICA: Marca como 'critico' se o status for 'critico' ou 'avaliacao'
-    # Ajuste essa condição conforme a sua lógica do negócio
-    df_hoje["critico"] = df_hoje["status"].str.lower().isin(["critico", "atrasado"])
-
-    tem_critico = df_hoje["critico"].any()
+    tem_critico = df_hoje["IS_CRITICO"].any()
 
     return {
         "hoje": df_hoje.to_dict(orient="records"),
@@ -51,38 +68,23 @@ def obter_dados_dashboard():
 
 def gerar_grafico_pizza_html():
     df = carregar_dados()
-    if df.empty:
+    if df.empty or "CLIENTE" not in df.columns:
         return ""
-    fig = px.pie(df, names="cliente", title="Distribuição por Cliente")
-    fig.update_layout(
-        template="plotly_dark",
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=20, r=20, t=50, b=20),
-    )
-    return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
-
-def gerar_grafico_pizza_html():
-    df = carregar_dados()
-    if df.empty:
-        return ""
-    fig = px.pie(df, names="cliente", title="Distribuição por Cliente")
+    fig = px.pie(df, names="CLIENTE", title="Distribuição por Cliente")
     fig.update_layout(
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=20, r=20, t=35, b=20),
-        legend=dict(
-            orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1
-        ),  # Legenda na horizontal topo
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
 
 def gerar_grafico_mensal_html():
     df = carregar_dados()
-    if df.empty:
+    if df.empty or "DATA_PREVISTA" not in df.columns:
         return ""
 
     data_atual = date.today()
@@ -90,7 +92,7 @@ def gerar_grafico_mensal_html():
 
     for month in range(1, 13):
         data_busca = f"{month:02d}/{data_atual.strftime('%Y')}"
-        total = df["data_prevista"].astype(str).str.contains(data_busca).sum()
+        total = df["DATA_PREVISTA"].astype(str).str.contains(data_busca).sum()
         resultados.append({"Mes": f"{month:02d}", "Total": total})
 
     df_estatistica = pd.DataFrame(resultados)
