@@ -22,37 +22,40 @@ print(f"{df[filterdata & filterop]}")
 print(f"\n-------------------- Amanha {data_amanha}------------------------")
 print(f"{df[filterdata_amanha & filterop]}\n")
 
-## -------- Estatisticas --------  ##
-total_hevi = (df["cliente"] == "hevi").sum()
-# print(total_hevi)
-print("--------------------------------------------------------------")
-print(df["cliente"].value_counts())  # contagem de todos os clientes de uma vez
-print("--------------------------------------------------------------")
-
-## -------- Estatisticas Mensal -------- ##
-
-for mouth in range(1, 13):
-    # Using f-string to format month and year (%Y)
-    data = f"{mouth:02d}/{data_atual.strftime('%Y')}"
-    print(data)
-    contagem = df["data_prevista"].str.contains(data).sum()
-    print(contagem)
-    dado = df["data_prevista"].str.lower().str.contains(data).sum()
-    print(f"total de entradas: {dado}\n")
-
-## -------- Calendario -------- ##
-
-ano_atual = calendar.calendar(2026)
-# print(ano_atual)
-ano_atual = date.today().year
-print(ano_atual)
-ano_passado = ano_atual - 1
-print(ano_passado)
-
-## -------- Grafico -------- ##
+## -------- Grafico Pizza -------- ##
 
 pizza = px.pie(df, names="cliente")
 pizza.show()
 
-histograma = px.histogram(dado, y="data_prevista", x="")
-histograma.show()
+
+## -------- Estatisticas Mensal de Entradas -------- ##
+def estatistica_mensal(df, data_atual):
+    resultados = []
+
+    for month in range(1, 13):
+        # Formata o mês como MM/AAAA (corrigida a digitação 'mouth' -> 'month')
+        data_busca = f"{month:02d}/{data_atual.strftime('%Y')}"
+
+        # Conta a quantidade de ocorrências no mês
+        total = df["data_prevista"].astype(str).str.contains(data_busca).sum()
+
+        # Guarda o resultado estruturado
+        resultados.append({"Mes": f"{month:02d}", "Total": total})
+
+    # Retorna os dados como um DataFrame do Pandas
+    return pd.DataFrame(resultados)
+
+
+# --- Exemplo de Uso ---
+# Supondo que você já tenha 'df' e 'data_atual':
+df_estatistica = estatistica_mensal(df, data_atual)
+
+# Gera o gráfico de barras/histograma com os dados acumulados por mês
+fig = px.bar(
+    df_estatistica,
+    x="Mes",
+    y="Total",
+    title=f"Estatística Mensal - {data_atual.strftime('%Y')}",
+    labels={"Mes": "Mês", "Total": "Total de Entradas"},
+)
+fig.show()
