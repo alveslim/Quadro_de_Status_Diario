@@ -2,6 +2,9 @@ from datetime import date, timedelta
 import pandas as pd
 import plotly.express as px
 
+DATA_PATH = "dados/dado.csv"
+
+
 ## -------- Data -------- ##
 # Data atual Br
 data_atual = date.today()
@@ -10,7 +13,7 @@ data_br = data_atual.strftime("%d/%m/%Y")
 data_br_amanha = data_amanha.strftime("%d/%m/%Y")
 
 # lendo planilha
-df = pd.read_csv("dado.csv")
+df = pd.read_csv(DATA_PATH)
 # filtrando apenas planilha de 38000 em diante && data atual
 filterdata = df["data_prevista"] == data_br
 filterdata_amanha = df["data_prevista"] == data_br_amanha
