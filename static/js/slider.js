@@ -3,21 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slides.length === 0) return;
 
     let currentIndex = 0;
-    const tempoTroca = 15000;
+    const tempoTroca = 15000; // 15 segundos por slide
+    let voltasCompletas = 0;
 
-    // VERIFICAÇÃO CRÍTICA: Se existir o slide com a classe de alerta
+    // VERIFICAÇÃO CRÍTICA: Se existir item crítico no Slide de Hoje
     const slideHoje = document.getElementById('slide-hoje');
     const temCritico = slideHoje && slideHoje.classList.contains('tem-item-critico');
 
     if (temCritico) {
-        // Redireciona a tela IMEDIATAMENTE para o slide de Hoje
         slides.forEach(slide => slide.classList.remove('active', 'exit'));
-        slideHoje.classList.add('active');
-
-        // Atualiza o índice do slider para o slide de hoje (índice 0)
+        if (slideHoje) slideHoje.classList.add('active');
         currentIndex = 0;
-
-        console.warn("⚠️ ALERTA CRÍTICO ENCONTRADO! Tela redirecionada para HOJE.");
+        console.warn(" ALERTA CRÍTICO ENCONTRADO! Exibindo Slide de Hoje.");
     }
 
     const trocarSlide = () => {
@@ -30,11 +27,24 @@ document.addEventListener('DOMContentLoaded', () => {
             slideAtual.classList.remove('exit');
         }, 800);
 
-        currentIndex = (currentIndex + 1) % slides.length;
-        const proximoSlide = slides[currentIndex];
+        // Avança o índice
+        currentIndex = currentIndex + 1;
 
+        // Se chegou ao fim do ciclo dos slides
+        if (currentIndex >= slides.length) {
+            currentIndex = 0;
+            voltasCompletas++;
+
+            // A cada 1 ciclo completo (ou após ver todos os slides), recarrega a página do servidor
+            console.log("Ciclo completo finalizado. Recarregando dados do CSV...");
+            window.location.reload();
+            return;
+        }
+
+        const proximoSlide = slides[currentIndex];
         proximoSlide.classList.add('active');
 
+        // Redimensiona gráficos Plotly caso existam no próximo slide
         const plotlyGraphs = proximoSlide.querySelectorAll('.js-plotly-plot');
         plotlyGraphs.forEach(graph => {
             if (window.Plotly) {

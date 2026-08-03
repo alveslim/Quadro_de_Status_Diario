@@ -8,6 +8,17 @@ from services.data_service import (
 app = Flask(__name__)
 
 
+# DESABILITA CACHE: Garante que o navegador receba os dados novos do CSV a cada requisição
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = (
+        "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
+    )
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "-1"
+    return response
+
+
 @app.route("/")
 def home():
     dados = obter_dados_dashboard()
