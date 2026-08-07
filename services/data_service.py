@@ -1,20 +1,27 @@
 from datetime import date, timedelta
 import pandas as pd
+import pathlib
 import plotly.express as px
 
-DATA_PATH = "dados/dado.csv"
+DATA_PATH = r"\\192.168.1.15\dados\dado.csv"
 
 
 def carregar_dados():
     try:
-        # keep_default_na=False evita que o Pandas transforme células em branco em NaN
-        df = pd.read_csv(DATA_PATH, dtype=str, keep_default_na=False)
-        # Limpa espaços em branco no nome das colunas e nos valores
+        # Usa pathlib para lidar de forma robusta com caminhos de rede (UNC)
+        path = pathlib.Path(DATA_PATH)
+
+        df = pd.read_csv(path, dtype=str, keep_default_na=False)
         df.columns = df.columns.str.strip()
+
         for col in df.columns:
             df[col] = df[col].astype(str).str.strip()
+
         return df
-    except FileNotFoundError:
+
+    except (FileNotFoundError, PermissionError, OSError) as e:
+        # Captura erros de arquivo não encontrado, falta de permissão ou queda de rede
+        print(f"Erro ao acessar o arquivo na rede: {e}")
         return pd.DataFrame()
 
 
